@@ -1,60 +1,83 @@
-import logo from './logo.svg';
-import './App.css';
-import React, {useState, useRef, useEffect} from 'react';
-import firebase, { firestore, auth } from './firebase';
+import React, { useState, useRef, useEffect } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import firebase, { firestore, auth } from "./firebase";
 
-
-function App() {
-  const [input, setInput] = useState('');
-  const [confirmCode, setConfirmCode] = useState('');
-  const [sentcode, setSentCode] = useState(false);
-  const [loading, setLoading] = useState(false);
+const App = () => {
+  const [input, setInput] = useState("");
+  const [sentCode, setSentCode] = useState(false);
+  const [confirmCode, setConfirmCode] = useState("");
+  const [error, setError] = useState(null);
+  const recaptcha = useRef(null);
+  const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
-
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifeir('sign-in-button', {
-
+    auth.languageCode = "mn";
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+      recaptcha.current
+    );
+    auth.onAuthStateChanged(user => {
+      console.log(user);
+      if (user) {
+        setIsLogin(true);
+      } else {
+        setIsLogin(false);
+      }
     });
-
   }, []);
 
-  const sendConfirmCode = async () => {
-    setLoading(true);
+  useEffect(() => {
+    console.log(auth.currentUser);
+  }, [auth]);
+
+  const sendCode = async () => {
+    setError(null);
     const appVerifier = window.recaptchaVerifier;
-    console.log(appVerifier);
     try {
-      window.confirmationResult = await auth.signInWithPhoneNumber(`+976 ${input}`, appVerifier);
-      serSentCode(true);
-    } catch(e) {
+      window.confirmationResult = await auth.signInWithPhoneNumber(
+        `+976 ${input}`,
+        appVerifier
+      );
+      setSentCode(true);
+    } catch (e) {
+      setError(e.message);
       console.log(e);
-    } finally {
-      setLoading(false);
     }
-  }
-  
+  };
+
   const login = async () => {
     try {
-      const user = await window.confirmationResult.confirm(confirmCode);
-      console.log(user);
-    } catch(e) {
-      console.log(e);
-      alert("buruu baina")
+      let result = await window.confirmationResult.confirm(confirmCode);
+      console.log("Hi" + result.user.phoneNumber);
+      setIsLogin(true);
+    } catch (error) {
+      alert("Код буруу");
     }
-  }
-
-
-
+  };
+  const logout = async () => {
+    await auth.signOut();
+    setIsLogin(false);
+  };
 
   return (
     <div className="App">
-      <input
-        value={input}
-        onChange={(event) => setInput(event.target.value)} 
-        placeholder="utasnii dugaar"></input>
-      <div id="sign-in-button"></div>
-      {!sentcode && <button}
+      {isLogin && <button onClick={logout}> Гарах</button>}
+      {error && <span> {error}</span>}
+      <input value={input} onChange={event => setInput(event.target.value)} />
+      <div ref={recaptcha} />
+      {!sentCode && <button onClick={sendCode}>Үргэлжлүүлэх</button>}
+      {sentCode && (
+        <>
+          <input
+            value={confirmCode}
+            onChange={event => setConfirmCode(event.target.value)}
+            placeholder="Баталгаажуулах"
+          />
+          <button onClick={login}>Нэвтрэх</button>
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default App;
