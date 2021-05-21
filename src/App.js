@@ -63,8 +63,10 @@ const App = () => {
     <div className="App">
       {isLogin && <button onClick={logout}> Гарах</button>}
       {error && <span> {error}</span>}
+      <div>Утасны дугаар оруулна уу</div>
       <input value={input} onChange={event => setInput(event.target.value)} />
       <div ref={recaptcha} />
+      
       {!sentCode && <button onClick={sendCode}>Үргэлжлүүлэх</button>}
       {sentCode && (
         <>
