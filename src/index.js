@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import Profile from "./components/profile";
+import Login from "./components/login";
 import reportWebVitals from "./reportWebVitals";
 ReactDOM.render(
   <React.StrictMode>
-    <Profile />
+    <Login />
   </React.StrictMode>,
   document.getElementById("root")
 );

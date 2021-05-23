@@ -1,4 +1,4 @@
-import "../styles/login.css";
+import "../styles/login.scss";
 import M from "materialize-css/dist/js/materialize.min.js";
 import "materialize-css/dist/css/materialize.css";
 import "materialize-css/dist/js/materialize.js";
