@@ -34,7 +34,7 @@ function Homepage() {
             </i>
           </a>
           <a className="btn-large white col">
-            <i class="material-icons flex-2 bold indigo-text lighten-1">
+            <i className="material-icons flex-2 bold indigo-text lighten-1">
               gps_not_fixed
             </i>
           </a>

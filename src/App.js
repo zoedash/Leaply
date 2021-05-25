@@ -1,85 +1,69 @@
-import React, { useState, useRef, useEffect } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import firebase, { firestore, auth } from "./firebase";
+import Home from './components/homepage';
+import Login from './components/login';
+import Profile from './components/profile';
+import Add from './components/friendrequest';
+import Message from './components/message';
+import { auth }  from './firebase';
+import 'materialize-css/dist/css/materialize.css';
+import 'materialize-css/dist/js/materialize.js';
+
+import React, { useEffect, useState } from 'react'
+import {
+    Route,
+    Switch,
+    useHistory,
+} from 'react-router-dom'
+import './App.css'
+import { BrowserRouter , useHistory } from 'react-router-dom';
 
 const App = () => {
-  const [input, setInput] = useState("");
-  const [sentCode, setSentCode] = useState(false);
-  const [confirmCode, setConfirmCode] = useState("");
-  const [error, setError] = useState(null);
-  const recaptcha = useRef(null);
-  const [isLogin, setIsLogin] = useState(false);
+    const [user, setUser] = useState('')
+    const history = useHistory();
 
-  useEffect(() => {
-    auth.languageCode = "mn";
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-      recaptcha.current
-    );
-    auth.onAuthStateChanged(user => {
-      console.log(user);
-      if (user) {
-        setIsLogin(true);
-      } else {
-        setIsLogin(false);
-      }
-    });
-  }, []);
+    useEffect (() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user){
+                setUser(user)
 
-  useEffect(() => {
-    console.log(auth.currentUser);
-  }, [auth]);
+            } else {
+                setUser(null)
+                history.replace('/login');
+            }
+        })
+        return () => unsubscribe;
+    }, [])
 
-  const sendCode = async () => {
-    setError(null);
-    const appVerifier = window.recaptchaVerifier;
-    try {
-      window.confirmationResult = await auth.signInWithPhoneNumber(
-        `+976 ${input}`,
-        appVerifier
-      );
-      setSentCode(true);
-    } catch (e) {
-      setError(e.message);
-      console.log(e);
-    }
-  };
+    return (
+        <div className="App">
+          <BrowserRouter>
+           <Switch>
+                {/* <Route exact path="/">
+                    <Home user={ user }/>
+                </Route> */}
+               
+                <Route path={"/login"} >
+                    <Login user={ user }/>
+                </Route>
+                { user && 
+          <Route exact path="/home" component={Home} />
+        }
+                <Route path="/home" >
+                    <Home user={ user }/>
+                </Route>
+                <Route path={"/profile"} >
+                    <Profile user={ user }/>
+                </Route>
+                <Route path={"/addfriend"} >
+                    <Add user={ user }/>
+                </Route>
+                <Route path={"/message"} >
+                    <Message user={ user }/>
+                </Route>
 
-  const login = async () => {
-    try {
-      let result = await window.confirmationResult.confirm(confirmCode);
-      console.log("Hi" + result.user.phoneNumber);
-      setIsLogin(true);
-    } catch (error) {
-      alert("Код буруу");
-    }
-  };
-  const logout = async () => {
-    await auth.signOut();
-    setIsLogin(false);
-  };
-
-  return (
-    <div className="App">
-      {isLogin && <button onClick={logout}> Гарах</button>}
-      {error && <span> {error}</span>}
-      <div>Утасны дугаар оруулна уу</div>
-      <input value={input} onChange={event => setInput(event.target.value)} />
-      <div ref={recaptcha} />
-      
-      {!sentCode && <button onClick={sendCode}>Үргэлжлүүлэх</button>}
-      {sentCode && (
-        <>
-          <input
-            value={confirmCode}
-            onChange={event => setConfirmCode(event.target.value)}
-            placeholder="Баталгаажуулах"
-          />
-          <button onClick={login}>Нэвтрэх</button>
-        </>
-      )}
-    </div>
-  );
-};
+            </Switch>
+          </BrowserRouter>
+        </div>
+    )
+}
 
 export default App;

@@ -22,7 +22,7 @@ function Homepage() {
             <i className="material-icons">message</i>
           </a>
           <a className="btn-large col">
-            <i class="material-icons">gps_not_fixed</i>
+            <i className="material-icons">gps_not_fixed</i>
           </a>
           <a className="btn-large col">
             <i className="material-icons">account_circle</i>

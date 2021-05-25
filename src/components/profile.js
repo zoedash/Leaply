@@ -1,4 +1,7 @@
 import "../styles/profile.scss";
+import React, { useState, useEffect} from 'react';
+import firebase, { firestore, auth} from '../firebase';
+import {Link} from "react-router-dom"
 import M from "materialize-css/dist/js/materialize.min.js";
 import "materialize-css/dist/css/materialize.css";
 import "materialize-css/dist/js/materialize.js";
