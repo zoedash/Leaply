@@ -12,9 +12,10 @@ import {
     Route,
     Switch,
     useHistory,
+    BrowserRouter,
 } from 'react-router-dom'
 import './App.css'
-import { BrowserRouter , useHistory } from 'react-router-dom';
+
 
 const App = () => {
     const [user, setUser] = useState('')
@@ -24,6 +25,7 @@ const App = () => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user){
                 setUser(user)
+                history.push('/home')
 
             } else {
                 setUser(null)
@@ -35,7 +37,7 @@ const App = () => {
 
     return (
         <div className="App">
-          <BrowserRouter>
+
            <Switch>
                 {/* <Route exact path="/">
                     <Home user={ user }/>
@@ -61,7 +63,7 @@ const App = () => {
                 </Route>
 
             </Switch>
-          </BrowserRouter>
+     
         </div>
     )
 }

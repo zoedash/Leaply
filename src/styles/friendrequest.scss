@@ -35,37 +35,3 @@
     }
   }
   
-  .container {
-    border: 10px solid green;
-  }
-  
-  .inner-container {
-    background-image: url(../assets/map.png);
-    border: 10px solid pink;
-  }
-  
-  .box {
-    height: 70vh;
-  }
-  
-  .btn-large {
-    border-radius: 12px;
-    width: 60px;
-    padding: 0;
-    background-color: white;
-    color: #5c6bc0;
-  }
-  
-  .btn-large:hover {
-    background-color: white;
-  }
-  
-  .material-icons {
-    font-size: 36px !important;
-  }
-  
-  .flex {
-    display: flex;
-    justify-content: space-evenly;
-  }
-  
