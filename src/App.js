@@ -1,11 +1,10 @@
 import Home from './components/homepage';
 import Login from './components/login';
-import Profile from './components/profile';
+// import Profile from './components/profile';
 import Add from './components/friendrequest';
 import Message from './components/message';
-import { auth }  from './firebase';
-import 'materialize-css/dist/css/materialize.css';
-import 'materialize-css/dist/js/materialize.js';
+import { auth, firestore }  from './firebase';
+
 
 import React, { useEffect, useState } from 'react'
 import {
@@ -24,12 +23,15 @@ const App = () => {
     useEffect (() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user){
-                setUser(user)
-                history.push('/home')
+                setUser(user);
+                history.push('/home');
+
+
 
             } else {
                 setUser(null)
                 history.replace('/login');
+
             }
         })
         return () => unsubscribe;
@@ -52,9 +54,9 @@ const App = () => {
                 <Route path="/home" >
                     <Home user={ user }/>
                 </Route>
-                <Route path={"/profile"} >
+                {/* <Route path={"/profile"} >
                     <Profile user={ user }/>
-                </Route>
+                </Route> */}
                 <Route path={"/addfriend"} >
                     <Add user={ user }/>
                 </Route>

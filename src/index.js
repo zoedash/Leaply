@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import SimpleMap from "./components/map";
+import Homepage from "./components/homepage";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from 'react-router-dom';
 
 
 ReactDOM.render(
   <BrowserRouter>
-    <SimpleMap />
+    <Homepage />
   </BrowserRouter>,
   document.getElementById("root")
 );

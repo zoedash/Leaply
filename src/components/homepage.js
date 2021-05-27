@@ -1,11 +1,41 @@
 import "../styles/homepage.scss";
-
 import React, { Component } from 'react';
-import GoogleMapReact from 'google-map-react';
+import { useEffect} from "react-dom"
+
+
+const GOOGLE_API_KEY = 'AIzaSyCC73qlA2nA5eFLEt8LRj1wFZCsyVfgf_Q';
+
+
+const lat = 47.918763;
+const long = 106.9129151;
+
+
 
 
 function Homepage() {
+  const onGoogleMapLoad = (e) => {
+    e.preventDefault();
+    // let map: google.maps.Map;
+    const google = window.google
+    console.log(google);
+    // const map = new window.google.maps.Map(document.getElementById("map"), {
+    //   center: { lat: lat, lng: long },
+    //   zoom: 15,
+    // });
+
+  };
+  // useEffect(() => {
+  //   let googleMapScript = document.createElement('script');
+  //   googleMapScript.src=`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`;
+  //   googleMapScript.async = true;
+  //   window.document.body.appendChild(googleMapScript);
+  //   googleMapScript.addEventListener('load', onGoogleMapLoad);
+  // }, [])
+
+
   return (
+<>
+    <div id="map" style={{ width: '1000px', height: '1000px' }} ></div>
     <div className="container homepage">
       <div className="inner-container-hp">
         <div className="row">
@@ -15,6 +45,8 @@ function Homepage() {
             </i>
           </a>
         </div>
+        
+
 
         <div className="box-hp avatar-hp">
           <div className="">
@@ -47,6 +79,7 @@ function Homepage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

@@ -2,11 +2,17 @@ import "../styles/profile.scss";
 import React, { useState, useEffect} from 'react';
 import firebase, { firestore, auth} from '../firebase';
 import {Link} from "react-router-dom"
-import M from "materialize-css/dist/js/materialize.min.js";
-import "materialize-css/dist/css/materialize.css";
-import "materialize-css/dist/js/materialize.js";
+// import M from "materialize-css/dist/js/materialize.min.js";
+// import "materialize-css/dist/css/materialize.css";
+// import "materialize-css/dist/js/materialize.js";
 
-function Profile() {
+function Profile({ user }) {
+  () => {
+    firestore.collection('users').doc(user.id).set({
+
+    }, { merge: true });
+  };
+
   return (
     <div>
       <div className="header grad"></div>
@@ -67,8 +73,8 @@ function Profile() {
     </div>
   );
 }
-document.addEventListener("DOMContentLoaded", function() {
-  var elems = document.querySelectorAll(".datepicker");
-  var instances = M.Datepicker.init(elems);
-});
+// document.addEventListener("DOMContentLoaded", function() {
+//   var elems = document.querySelectorAll(".datepicker");
+//   // var instances = M.Datepicker.init(elems);
+// });
 export default Profile;
